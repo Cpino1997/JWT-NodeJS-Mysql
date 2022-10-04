@@ -1,7 +1,7 @@
   
 
-# Guía de implementación JsonWebToken con Express js.
-Esta guiá tiene como objetivo enseñar y mostrar una forma de segurizar aplicaciones con JWT.
+# Implementacion de jwt en express js
+Esta guia tiene como objetivo crear un apiRest segura para express js.
 
 # Requisitos:
 - VisualStudioCode.
@@ -12,30 +12,37 @@ Esta guiá tiene como objetivo enseñar y mostrar una forma de segurizar aplicac
 ## Pasos:
 
 ### -Paso 1:
-Primero crearemos un directorio, luego inicializaremos un proyecto y por ultimo importaremos los componentes que utilizaremos
-y también importaremos las dependencias a utilizar
+Primero vamos a crear el servidor de express, para esto vamos a utilizar http que viene por defecto en node.js (así que no tenemos que instalarlo).
+
+En una consula de comandos ingresaremos los siguentes codigos:
 
 ``` bash  
-$ mkdir nodeapp 
-$ cd nodeapp 
+#creamos una carpeta donde guardaremos el proyecto
+$ mkdir nombreApp 
+#ingresamos a la carpeta
+$ cd nomreApp
+#inicializamos el proyecto
 $ npm init -y
+#instalamos las dependencias necesarias
 $ npm i express bcryptjs cookie-parser dotenv ejs jsonwebtoken mysql
 $ sudo npm i -g nodemon
 ```
 
 ### -Paso 2;
-Crearemos la estructura de nuestro proyecto, o bien podemos clonar el proyecto:
+Crearemos la estructura de nuestro proyecto, o bien podemos clonar el proyecto base desde github.
+
 ``` bash
 $ git clone https://github.com/PinoLabs/base.git
 $ cd base
 $ npm install
 $ node app.js
 ```
+
 Estructura del Proyecto
 ``` bash
-├── app.js  
+├── app.js
 ├── controllers
-│ └── authController.js
+│ └── authController.js 
 ├── database
 │ └── db.js 
 ├── env
@@ -61,8 +68,8 @@ Estructura del Proyecto
 ```
 
   
-### -Paso 3:
-Configuraremos nuestro enviroment para conectar la base de datos, para ello necesitamos ir al archivo env/.env
+### - Paso 3:
+Configuraremos nuestro archivo .env para conectar la base de datos, para ello necesitamos ir al archivo env/.env
 en el configuraremos nuestras variables de conexión:
 DB_HOST,
 DB_USER,
@@ -71,14 +78,15 @@ DB_HOSTNAME,
 JWT_SECRETO, // secreto
 JWT_TIEMPO_EXPIRA, // tiempo de expiración del token.
 JWT_COOKIE_EXPIRES //tiempo de expiración de la cookie.
+
+Así debería quedar nuestro archivo .env:
 <img  src="https://drive.google.com/uc?export=view&id=13IyKO-7UvVgaBPlERvoDcxJfVILKx1dZ">
 Con esto ya tenemos nuestra base de datos conectada.
 
-### -Paso 4:
-
+### - Paso 4:
 Comenzaremos a trabajar en los archivos vacíos.
-el primer archivo a modificar sera router.js
 
+el primer archivo a modificar sera router.js donde añadiremos las rutas get de nuestra aplicación.
 ```js
 //imports
 const  express = require('express')
@@ -98,7 +106,7 @@ res.render('registro')
 module.exports = router
 ```
 
-luego en nuestro archivo db.js ingresaremos los siguentes codigos
+luego en nuestro archivo db.js Crearemos la conexión de nuestra bd con los siguentes codigos
 
 ```js
 
@@ -122,11 +130,10 @@ console.log('Contectado!')
 module.exports = conn
 ```
 
-con esto al arrancar la aplicación podremos ingresar a /login / registro y / para ingresar al index
-ahora editaremos nuestros templates para que se vean mas bonitos y agregaremos el componente de alertas
+con esto al arrancar la aplicación podremos ingresar a /login / registro y  al index desde la ruta /
+ahora editaremos nuestras plantillas ejs para que se vean mas bonitos y agregaremos el componente de alertas swing
 
 login.ejs
-
 ```html
 <!doctype  html>
 <html  lang="es">
@@ -182,7 +189,6 @@ window.location = '/<%= ruta %>'
 ```
 
 registro.ejs
-
 ```html
 <!doctype  html>
 <html  lang="es">
@@ -229,7 +235,6 @@ registro.ejs
 ```
 
 index.ejs
-
 ```html
 <!doctype  html>
 <html  lang="es">
@@ -287,8 +292,7 @@ index.ejs
 
 ```
 
-si intentaron arrancar el login lo mas probable es que les salga error, pues importamos Swing.alert el cual no esta configurado. por lo cual volveremos a router.js y agregaremos las siguentes lineas
-
+si intentamos arrancar el programa lo mas probable es que les salga error, pues importamos Swing.alert el cual no esta configurado. por lo cual volveremos a router.js y agregaremos las siguentes lineas
 ```js
 const  express = require('express')
 const  router = express.Router()
@@ -308,11 +312,10 @@ res.render('registro')
 }) 
 
 module.exports = router
-
 ```
 
-### -Paso 5:
-ahora integraremos nuestro authController para logear nuestro usuario.
+### - Paso 5:
+ahora integraremos nuestro authController para logear y authenticar nuestro usuario.
 
 ```js
 
@@ -436,13 +439,13 @@ return  res.redirect('/')
 }
 
 ```
-agregamos los nuevos metodos post para el router.js
+agregamos agregaremos las rutas post de nuestra aplicación en el archivo router.js
 ```js
 const  express = require('express')
 const  router = express.Router()
 const  authController = require('../controllers/authController')
 
-//router get /
+//router get , consultamos si esta logeado
 router.get('/', authController.isAuthenticated, (req,res)=>{
 res.render('index',{user:req.user})
 }) 
@@ -465,10 +468,9 @@ router.get('/logout', authController.logout)
 module.exports = router
 ```
 
-ahora en app.js debemos agregar las siguentes lineas y quitar de comentarios las demas para que la app pueda funcionar
+ahora en el archivo app.js debemos agregar las siguentes lineas y quitar de comentarios las funciones de cookies para que la app pueda funcionar
 
 ```js
-
 //declaramos las variables de la app
 const  express = require('express')
 const  dotenv = require('dotenv')
@@ -505,9 +507,6 @@ app.listen(3000,()=>{
 console.log('servidor funcionando en http://localhost:3000')
 })
 ```
+Con esto ya tienes todo lo necesario para crear una app con JWT y Express JS 
 
-Con esto ya tienes todo lo necesario para crear una app con JWT y Express JS
-
-  
-
-<a  href="https://github.com/PinoLabs/final">Codigo Final</a>
+<a  href="https://github.com/PinoLabs/final">Codigo Final</a> de la aplicacion.
