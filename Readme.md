@@ -67,6 +67,13 @@ Estructura del Proyecto
 └── registro.ejs
 ```
 
+controllers : todo controlador de la aplicacion se encuentra en esta carpeta.
+database: contiene todos los archivos de conexion a la bd.
+env: contiene todos los archivos de configuracion del entrono.
+public : carpeta de uso publico, estatica.
+routes : contiene todas las rutas de acceso para la aplicacion.
+views : contiene las vistas de nuestra aplicacion. 
+
   
 ### - Paso 3:
 Configuraremos nuestro archivo .env para conectar la base de datos, para ello necesitamos ir al archivo env/.env
